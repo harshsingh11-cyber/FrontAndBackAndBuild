@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Table2.css">
+  <title>Table2</title>
+</head>
+<body>
+
+<div class="main">
+  <!-- =================================================== -->
+  <div class="heading_main">
+    <h3>
+      MarkeTopper <sup>®</sup>
+    </h3>
+    <h3>Option Trading Platform</h3>
+    <h5>Analyst Viewer</h5>
+  </div>
+  <!-- ==================================================== -->
+  <div class="table-container">
+    <table>
+      <thead class="theading">
+        <tr>
+          <th class="heading">AnalystCode</th>
+          <th class="heading">ExpDt</th>
+          <th class="heading">LExp</th>
+          <!-- Add other header columns here -->
+        </tr>
+      </thead>
+
+      <!-- Data rows will be dynamically added here using JavaScript -->
+
+    </table>
+  </div>
+</div>
+
+<script>
+  const baseUrl = "http://localhost:8000/";
+  let data = [];
+
+  async function fetchData() {
+    try {
+      const response = await fetch(baseUrl);
+      const jsonData = await response.json();
+      data = jsonData;
+      renderTable();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function renderTable() {
+    const tableBody = document.querySelector('table tbody');
+    tableBody.innerHTML = "";
+
+    data.forEach((elm) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${elm.AnalystCode}</td>
+        <td class="common">${elm.ExpDt}</td>
+        <td>${elm.LExp}</td>
+        <!-- Add other data columns here -->
+      `;
+
+      // Add row to table
+      tableBody.appendChild(row);
+    });
+  }
+
+  // Initial fetch
+  fetchData();
+
+  // Fetch data every 5000 milliseconds
+  setInterval(fetchData, 5000);
+</script>
+
+</body>
+</html>
